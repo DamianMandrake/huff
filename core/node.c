@@ -33,6 +33,6 @@ typedef struct Node Node;
 typedef struct PriorityQue Pq;
 typedef struct HuffTree Ht;
 typedef struct Stack St;
-typedef struct ListNode LNode
+typedef struct ListNode LNode;
 typedef struct List List;
 

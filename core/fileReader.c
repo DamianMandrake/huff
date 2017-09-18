@@ -3,18 +3,20 @@
 #define BUFFER_SIZE 512
 #include "list.c"
 List* readFile(char *fileName){
-	File *fp;List *fContents=(List*)(malloc(sizeof(List)));
-	fContents->
+	FILE *fp;List *list=(List*)(malloc(sizeof(List)));
+	list->start=list->end=NULL;
 	int i=1;
 	char j;
 
+	printf("READING\n");
 	while(i){
 		i=0;
-		char *contents=(char*)(malloc(sizeof(char)*BUFFER_SIZE+1));
-		while((j=fgetc())!= EOF && i<BUFFER_SIZE){
+		char *contents=(char*)(malloc(sizeof(char)*BUFFER_SIZE));
+		printf("BUFFER CREATED\n");
+		while((j=fgetc(fp))!= EOF && i<BUFFER_SIZE){
 			contents[i++]=j;
 		}
-		contents[i]='\0';
+		contents[i-1]='\0';
 
 		if(j==EOF)
 			return list;
@@ -25,9 +27,9 @@ List* readFile(char *fileName){
 
 
 	fclose(fp);
-	return fContents;
+	return list;
 }
-void testCases(){
+static void testCases(){
 	
 	listWalker(readFile("node.c"));
 }
