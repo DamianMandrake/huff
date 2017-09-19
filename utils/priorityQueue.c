@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include "node.c"
-/* an implementation of a output restricted prioritized deque...*/
+/* an implementation of an output restricted prioritized deque...*/
 struct PriorityNode
 {	
 	Node *mainNode;
@@ -15,11 +15,6 @@ typedef struct PriorityNode PriorityNode;
 typedef struct PriorityQue Pq;
 int isQueueEmpty(Pq *q){
 	return q->head==NULL && q->tail==NULL;
-}
-void appendPriorityNodes(PriorityNode *first,PriorityNode *target){
-	target->right=first->right;
-	target->left=first;
-	first->right=target;
 }
 void queueWalker(Pq *q){
 	if(q==NULL){
@@ -83,12 +78,13 @@ void enque(Pq *q,Node *mainNode){
 }
 
 /* function returns node at head. Must free node from the outside*/
-PriorityNode* deque(Pq *q){
+Node* deque(Pq *q){
 
-	if(q){
+	if(q && q->head!=NULL){
 		PriorityNode *pn=q->head;
 		q->head=q->head->right;
-		return pn;
+
+		return pn->mainNode;
 	}
 
 	return NULL;

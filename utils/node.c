@@ -27,7 +27,7 @@ struct List
 typedef struct Data Data;
 typedef struct Node Node;
 typedef struct PriorityQue Pq;
-typedef struct HuffTree Ht;
+typedef struct HuffTree HuffTree;
 typedef struct Stack St;
 typedef struct ListNode LNode;
 typedef struct List List;

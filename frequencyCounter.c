@@ -1,6 +1,4 @@
-#include "utils/node.c"
-#include "utils/fileReader.c"
-#include "utils/priorityQueue.c"
+
 int strlen(char *ch){
 	if(ch){
 		int i=0;
@@ -101,7 +99,7 @@ void fcTestCases(){
 	Pq *q=getFrequencyQueue("tp.c");
 	queueWalker(q);
 }
-int main(){
+/*int main(){
 	fcTestCases();
 	return 1;
-}
+}*/
