@@ -16,33 +16,55 @@ char* append(char *str1,char *str2){
 	return newStr;
 
 }
+void printNodeData(Node *node){
+	printf("freq %d char %c \n",node->data->freq,node->data->ch);
+}
 /* this function pairs 2 nodes and returns a new Node which stores the maxchild in left and the min child on the right*/
 Node* clubNodes(Node *max,Node *min){
 
 	Node *newNode=getTempData( NULL, max->data->freq + min->data->freq);
-	newNode->left=max;
-	newNode->right=min;
+	printf("MAX \n");
+	printNodeData(max);
+	printf("MIN\n");
+	printNodeData(min);
+
+	newNode->right=max;
+	newNode->left=min;
 
 	return newNode;
 
 }
 
-/* this function creates a huffman tree.*/
-HuffTree* createHuffTree(char *fileName){
 
-	Pq *pq=getFrequencyQueue(fileName);
+/* this function creates a huffman tree.*/
+HuffTree* createHuffTree(Pq *pq){
+	Node *newRoot;
+	queueWalker(pq);
 	HuffTree *huffTree=(HuffTree*)(malloc(sizeof(HuffTree)));
 	huffTree->root=NULL;
 	Node *max=NULL,*min=NULL;
 
-	while((min=deque(pq))&& (max=deque(pq))){
-		Node *newRoot=clubNodes(max,min);
+	while((min=deque(pq)) && (max=deque(pq))){
+		queueWalker(pq);
+		printf("MAX \n");
+		printNodeData(max);
+		printf("MIN\n");
+		printNodeData(min);
+
+		newRoot=clubNodes(max,min);
 		enque(pq,newRoot);
 
 	}
+	/*printf("MAX \n");
+		printNodeData(max);
+		printf("MIN\n");
+		printNodeData(min);*/
 
-	huffTree->root=max;
 
+	queueWalker(pq);
+
+	huffTree->root=newRoot;
+	printf("%c data \n",huffTree->root->left->data->ch);
 	return huffTree;
 
 
@@ -56,7 +78,7 @@ void inorder(Node *root){
 }
 
 void huffTestCases(){
-	HuffTree *t=createHuffTree("tp.c");
+	HuffTree *t=createHuffTree(getFrequencyQueue("tp.c"));
 	inorder(t->root);
 }
 int main(int argc, char const *argv[])
