@@ -7,10 +7,6 @@ struct Node {
 	struct Data *data;
 	struct Node *left,*right;
 };
-struct PriorityQue
-{
-	struct Node *head,*tail;
-};
 struct Stack{
 	struct Node *top;
 
