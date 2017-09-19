@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.c"
+//#include "node.c"
 
 void listAdd(List *whichList,char *data){
 	LNode *newNode=(LNode*)(malloc(sizeof(LNode)));

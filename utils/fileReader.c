@@ -20,7 +20,6 @@ List* readFile(char *fileName){
 		i=1;
 		char *contents=(char*)(malloc(sizeof(char)*BUFFER_SIZE));
 		contents[0]=j;
-		printf("BUFFER CREATED\n");
 
 		while((j=fgetc(fp))!= EOF && i<BUFFER_SIZE){
 			contents[i++]=(char)j;
@@ -45,9 +44,9 @@ static void testCases(){
 		listWalker(fileContentList);
 	
 }
-int main(int argc, char const *argv[])
+/*int main(int argc, char const *argv[])
 {
 	testCases();
 	return 0;
-}
+}*/
 

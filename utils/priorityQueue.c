@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.c"
+//#include "node.c"
+/* an implementation of a output restricted prioritized deque...*/
 struct PriorityNode
 {	
 	Node *mainNode;
@@ -20,45 +21,11 @@ void appendPriorityNodes(PriorityNode *first,PriorityNode *target){
 	target->left=first;
 	first->right=target;
 }
-/* function enques data of type Node into the queue.
-*/
-void enque(Pq *q,Node *mainNode){
-
-	PriorityNode *pn=(PriorityNode*)(malloc(sizeof(PriorityNode)));
-	pn->right=pn->left=NULL;
-	pn->mainNode=mainNode;
-
-	if(isQueueEmpty(q)){
-		q->head = q->tail= pn;
+void queueWalker(Pq *q){
+	if(q==NULL){
+		printf("Cant walk\n");
 		return;
 	}
-
-	PriorityNode *temp=q->head;
-	while(temp && pn->mainNode->data->freq >  temp->mainNode->data->freq )
-		temp=temp->right;
-
-
-	temp= temp?temp:q->tail;
-	if(temp!=q->head)
-		appendPriorityNodes(temp,pn);
-	else{
-		pn->right=q->head;
-		q->head=pn;
-
-	}
-	/*if(temp){
-		appendPriorityNodes(temp,pn);
-	}else{
-	/*this means the list has exhausted and the element inserted was the least
-		simply appending to list
-	 
-		appendPriorityNodes(q->tail,pn);
-		
-	}*/
-
-
-}
-void queueWalker(Pq *q){
 	PriorityNode *pn=q->head;
 	printf("WALKING\n");
 	
@@ -69,7 +36,72 @@ void queueWalker(Pq *q){
 	printf("DONE\n");
 }
 
-void deletePriorityQueue(Pq *q){
+
+
+/* function enques data of type Node into the queue.
+*/
+void enque(Pq *q,Node *mainNode){
+
+	PriorityNode *pn=(PriorityNode*)(malloc(sizeof(PriorityNode)));
+	pn->right=pn->left=NULL;
+	pn->mainNode=mainNode;
+
+	
+	printf("Inserting %c %d in the que\n",mainNode->data->ch,mainNode->data->freq );
+	if(isQueueEmpty(q)){
+		q->head = q->tail= pn;
+		return;
+	}
+
+	PriorityNode *temp=q->head;
+	while(temp && pn->mainNode->data->freq >  temp->mainNode->data->freq )
+		temp=temp->right;
+	
+
+	if(temp)
+		if(temp==q->head){
+
+			pn->right=q->head;
+			q->head->left=pn;
+			q->head=pn;
+
+		}else{
+			/* anywhere in between */
+			pn->right=temp->left->right;
+			pn->left=temp->left;
+			temp->left->right=pn;
+			temp->left=pn;
+		}
+	else {
+		/* when temp is null ie the element inserted was greatest */
+		q->tail->right=pn;
+		pn->left=q->tail;
+		q->tail=pn;
+			
+	}
+
+}
+
+/* function returns node at head. Must free node from the outside*/
+PriorityNode* deque(Pq *q){
+
+	if(q){
+		PriorityNode *pn=q->head;
+		q->head=q->head->right;
+		return pn;
+	}
+
+	return NULL;
+
+
+}
+
+
+void* deletePriorityQueue(Pq *q){
+	if(q==NULL){
+		printf("Cant delete\n");
+		return NULL;
+	}
 	PriorityNode *pn=q->head,*follow;
 	printf("Deleting queue\n");
 	while(pn){
@@ -77,13 +109,12 @@ void deletePriorityQueue(Pq *q){
 		pn=pn->right;
 		free(follow);
 	}
-	q=NULL;
+	
 	printf("Done with deletion\n");
-
+	return NULL;
 }
-/* function returns node deleted*/
-PriorityNode* deque();
-static Node* getTempData(char ch,int fre){
+
+Node* getTempData(char ch,int fre){
 	Node *node=(Node*)(malloc(sizeof(Node)));
 	node->right=node->left=NULL;
 	Data *d=(Data*)(malloc(sizeof(Data)));
@@ -98,17 +129,26 @@ static void pqTestCases(){
 	enque(p,getTempData('a',909));
 	enque(p,getTempData('b',900));
 	enque(p,getTempData('c',1000));
-	enque(p,getTempData('c',1000));
-	queueWalker(p);
+	enque(p,getTempData('c',10000));
+	//queueWalker(p);
 	enque(p,getTempData('c',800));
 	enque(p,getTempData('c',950));
 	enque(p,getTempData('c',10));
-	deletePriorityQueue(p);
-	p==NULL?printf("aSd\n"):printf("ASd\n");;
+	enque(p,getTempData('t',789));
+	int arr[]={323,55,23,58,23123,899,234};
+	for(int j=0;j<10;j++)
+	for(int i=0;i<6;i++)
+		enque(p,getTempData('a',arr[i]));
+	PriorityNode *pn=deque(p);
+	Node *d=pn->mainNode;
+	free(pn);
+	printf("DATA In d %d\n",d->data->freq);
 	queueWalker(p);
+
+	//queueWalker(p);
 }
-int main(){
+/*int main(){
 
 	pqTestCases();
 	return 1;
-}
+}*/
