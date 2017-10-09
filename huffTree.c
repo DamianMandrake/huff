@@ -3,6 +3,7 @@
 #include "utils/fileReader.c"
 #include "utils/priorityQueue.c"
 #include "frequencyCounter.c"
+char code[26];
 void strcpy(char *source, int sourceLen,int offset,char *dest){
 	for(int i=offset;i<sourceLen;i++)
 		dest[i]=source[i];
@@ -19,7 +20,7 @@ char* append(char *str1,char *str2){
 void printNodeData(Node *node){
 	printf("freq %d char %c \n",node->data->freq,node->data->ch);
 }
-/* this function pairs 2 nodes and returns a new Node which stores the maxchild in left and the min child on the right*/
+/* this function pairs 2 nodes and returns a new Node which stores the maxchild on the right and the min child on the left*/
 Node* clubNodes(Node *max,Node *min){
 
 	Node *newNode=getTempData( NULL, max->data->freq + min->data->freq);
@@ -34,9 +35,21 @@ Node* clubNodes(Node *max,Node *min){
 	return newNode;
 
 }
+/* obtains huff codes of all characters present in the list... */
+void obtainHuffCode(Node *root,int codeTop){
+	/* when the left child exists*/
+	if(root->left){
+		code[codeTop]=0;
+		obtainHuffCode(root->left,codeTop+1)
+	}
+	/* when the right and the left dont exist ie its a leaf node ... */
+	if(root->left==NULL && root->right==NULL ){
 
+	}
 
-/* this function creates a huffman tree.*/
+}
+
+/* this function creates a huffman tree given a prioriry queue.*/
 HuffTree* createHuffTree(Pq *pq){
 	Node *newRoot;
 	queueWalker(pq);
@@ -45,22 +58,11 @@ HuffTree* createHuffTree(Pq *pq){
 	Node *max=NULL,*min=NULL;
 
 	while((min=deque(pq)) && (max=deque(pq))){
-		queueWalker(pq);
-		printf("MAX \n");
-		printNodeData(max);
-		printf("MIN\n");
-		printNodeData(min);
-
 		newRoot=clubNodes(max,min);
 		enque(pq,newRoot);
 
 	}
-	/*printf("MAX \n");
-		printNodeData(max);
-		printf("MIN\n");
-		printNodeData(min);*/
-
-
+	
 	queueWalker(pq);
 
 	huffTree->root=newRoot;

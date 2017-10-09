@@ -42,10 +42,11 @@ int isInArr(char arr[],int len,char target){
 
 	return arr[i]==target||arr[j]==target;
 }
-Pq* getFrequencyQueue(char *fileName){
+/* char arr is being passed as an argument only to obtain the list of characters for traversing the huffTree.*/
+Pq* getFrequencyQueue(char *fileName,char *arr){
 	int i,j,f;char ch;
 	List *list=readFile(fileName);
-	char *arr;
+	//char *arr;
 	int arrCounter=0;
 	
 
@@ -55,8 +56,15 @@ Pq* getFrequencyQueue(char *fileName){
 	}
 	Pq *pq=(Pq*)(malloc(sizeof(Pq)));
 	pq->head=pq->tail=NULL;
+	
 	//for all ascii chars
-	arr=(char*)malloc(sizeof(char)*128);
+	
+
+	arr=(char*)malloc(sizeof(char)*256);
+
+	/* todo make the above implementation better... should make it dynamic since the probability of obtaining all 255 
+	chars is very low*/
+
 	char *s;
 	LNode *temp=list->start;
 	while(temp){
