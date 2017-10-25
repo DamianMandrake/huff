@@ -104,7 +104,7 @@ void isInArrTc(){
 	
 }
 void fcTestCases(){
-	Pq *q=getFrequencyQueue("tp.c");
+	Pq *q=getFrequencyQueue("tp.c",NULL	);
 	queueWalker(q);
 }
 /*int main(){

@@ -3,7 +3,15 @@
 #include "utils/fileReader.c"
 #include "utils/priorityQueue.c"
 #include "frequencyCounter.c"
-char code[26];
+/*	TESTING */
+struct HashMap{
+	int h;
+};
+typedef struct HashMap HashMap;
+/* TESTING*/
+
+
+
 void strcpy(char *source, int sourceLen,int offset,char *dest){
 	for(int i=offset;i<sourceLen;i++)
 		dest[i]=source[i];
@@ -35,17 +43,43 @@ Node* clubNodes(Node *max,Node *min){
 	return newNode;
 
 }
+
+/* function adds the huffCode to a map M={char key, char *huffCode}*/
+void insertInMap(HashMap *hm,char key,char *huffCode,int len){
+	int i=0;
+	printf("Code of %c is %s  \n",key,huffCode);
+	/* TODO add the code to the map*/
+	for(i=0;i<len;i++)
+		printf("%c",huffCode[i] );
+
+
+
+}
 /* obtains huff codes of all characters present in the list... */
-void obtainHuffCode(Node *root,int codeTop){
+void obtainHuffCode(Node *root,char *stack,int top,HashMap *hm){
 	/* when the left child exists*/
 	if(root->left){
-		code[codeTop]=0;
-		obtainHuffCode(root->left,codeTop+1)
-	}
-	/* when the right and the left dont exist ie its a leaf node ... */
-	if(root->left==NULL && root->right==NULL ){
+		stack[top]='0';
+		obtainHuffCode(root->left,stack,top+1,hm);
 
 	}
+	/* when the right child exists*/
+	if(root->right){
+		stack[top]='1';
+		obtainHuffCode(root->right,stack,top+1,hm);
+	}
+
+
+
+	if(root->left == root->right ){//Leaf and NULL
+		stack[top]='\0';
+		/*for(int i=0;i<=top;i++)
+			printf("%c",stack[i] );*/
+		printf("\n");
+		insertInMap(hm,root->data->ch,stack,top+1);
+
+	}	
+
 
 }
 
@@ -80,8 +114,21 @@ void inorder(Node *root){
 }
 
 void huffTestCases(){
-	HuffTree *t=createHuffTree(getFrequencyQueue("tp.c"));
+	char *arr;
+	HuffTree *t=createHuffTree(getFrequencyQueue("tp.c",arr));
+	printf("WALKING THE TREE\n");
 	inorder(t->root);
+	printf("DONE wITH TREE \n");
+
+	HashMap *hm=(HashMap*)(malloc(sizeof(HashMap)));
+	char *stack=(char*)(malloc(sizeof(char )* 128));
+
+	obtainHuffCode(t->root,stack,0,hm);
+
+
+
+
+
 }
 int main(int argc, char const *argv[])
 {
